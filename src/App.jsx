@@ -7,9 +7,10 @@ import About from './Pages/About';
 import Home from './Pages/Home';
 import Contact from './Pages/Contact';
 import Cars from './Pages/Cars';
-import Signup from './Pages/Signup';
+import Register from './Pages/Register';
 import Login from './Pages/Login';
 import RenterDashboard from './Pages/RenterDashboard ';
+import RentDetails from './Pages/RentDetails'
 const App = () => {
   const [loading, setloading] = useState(false);
 
@@ -34,9 +35,10 @@ const App = () => {
             <Route path="/About" element={<About />} />
             <Route path="/Cars" element={<Cars />} />
             <Route path="/Contact" element={<Contact />} />
-            <Route path="/Signup" element={<Signup />} />
+            <Route path="/Register" element={<Register />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/RenterDashboard" element={<RenterDashboard />} />
+            <Route path="/rent/:carId" element={<RentDetails />} />
           </Routes>
           <Footer />
         </>
