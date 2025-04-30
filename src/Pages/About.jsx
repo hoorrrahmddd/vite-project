@@ -1,100 +1,73 @@
-
-// ======================== Styled About Page ========================
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
 const About = () => {
   return (
-    <div className="bg-white min-h-screen px-6 py-20 lg:px-32 relative overflow-hidden">
-      {/* Background Circles */}
-      <div className="absolute top-[-100px] left-[-150px] w-72 h-72 bg-black opacity-10 rounded-full z-0"></div>
-      <div className="absolute bottom-[-100px] right-[-150px] w-80 h-80 bg-black opacity-10 rounded-full z-0"></div>
+    <div className="min-h-screen bg-[#f4f4f4] px-6 py-20 lg:px-32 flex flex-col gap-20">
 
-      <div className="relative z-10">
-        {/* Introduction */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl font-bold text-[#2D2541] mb-4">About CarShare</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Redefining how you move. CarShare connects trusted car owners with responsible renters through a flexible and secure platform.
+      {/* الجزء الأول - الصور والعبارة */}
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.8 }} 
+        className="flex flex-col md:flex-row gap-10 items-center"
+      >
+        {/* الديف الثاني - عبارة */}
+        <div className="flex flex-col justify-center items-start w-full md:w-1/2">
+          <h2 className="text-4xl font-bold text-[#2D2541] mb-6">Discover Freedom with CarShare</h2>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            CarShare is more than just a platform — it's your gateway to smart, flexible, and affordable travel. 
+            Whether you're an owner or a renter, we bring the community together for better mobility.
           </p>
-        </motion.div>
-
-        {/* Mission & Vision */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-[#f9f9f9] rounded-2xl shadow-lg p-8"
-          >
-            <h3 className="text-2xl font-bold text-[#2D2541] mb-4">Our Mission</h3>
-            <p className="text-gray-600 text-sm">
-              Empowering mobility by providing accessible, flexible, and affordable car rental experiences to everyone.
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-[#f9f9f9] rounded-2xl shadow-lg p-8"
-          >
-            <h3 className="text-2xl font-bold text-[#2D2541] mb-4">Our Vision</h3>
-            <p className="text-gray-600 text-sm">
-              To be the leading peer-to-peer car rental platform, enabling smarter travel and creating economic opportunities.
-            </p>
-          </motion.div>
         </div>
 
-        {/* Our Story */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-20"
-        >
-          <h3 className="text-2xl font-bold text-center text-[#2D2541] mb-8">Our Story</h3>
-          <div className="text-center text-gray-600 max-w-3xl mx-auto text-sm">
-            Since 2020, CarShare has been on a mission to revolutionize mobility. What started with a few cars and a big dream is now a trusted network connecting thousands of drivers and owners across the region.
+        {/* الديف الأول - صور */}
+        <div className="flex flex-col gap-6 w-full md:w-1/2">
+          <div className="flex flex-row gap-6">
+            <img src="src/assets/pexels-photo-305070.webp" alt="Car 1" className="w-1/2 h-48 object-cover rounded-lg shadow-md" />
+            <img src="src/assets/pexels-photo-28926633.webp" alt="Car 2" className="w-1/2 h-48 object-cover rounded-lg shadow-md" />
           </div>
-        </motion.div>
-
-        {/* Our Values */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-20"
-        >
-          <h3 className="text-2xl font-bold text-center text-[#2D2541] mb-8">Our Values</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {['Trust', 'Transparency', 'Flexibility', 'Innovation', 'Security', 'Community'].map((value, index) => (
-              <div key={index} className="bg-[#f4f4f4] rounded-2xl shadow p-6 text-center">
-                <p className="text-[#2D2541] font-semibold text-lg mb-2">{value}</p>
-                <p className="text-gray-600 text-sm">We believe in {value.toLowerCase()} as a cornerstone of every journey.</p>
-              </div>
-            ))}
+          <div>
+            <img src="src/assets/pexels-photo-4038045.webp" alt="Car 3" className="w-full h-56 object-cover rounded-lg shadow-md" />
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
-          <p className="text-gray-600 text-sm mb-4">Ready to be part of the future of mobility?</p>
-          <button className="bg-[#2D2541] text-white px-6 py-2 rounded-md hover:bg-[#413364] transition duration-300">
-            Join Us
-          </button>
-        </motion.div>
-      </div>
+      {/* الجزء الثاني - Commitment Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.8 }} 
+        className="flex flex-col md:flex-row items-center bg-white rounded-xl p-8 gap-10"
+      >
+        {/* صورة عالشمال */}
+        <div className="w-full md:w-1/2">
+          <img src="src/assets/Screenshot 2025-04-28 160432.png" alt="Handshake" className="w-full h-full object-cover rounded-lg" />
+        </div>
+
+        {/* نص عاليمين */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center items-start space-y-6">
+          <h2 className="text-3xl font-bold text-[#2D2541]">
+            We don’t just meet your expectations, we exceed them.
+          </h2>
+          <p className="text-gray-600 text-base">
+            We are committed to providing our customers with exceptional service and competitive pricing.
+          </p>
+
+          <ul className="text-gray-700 text-sm space-y-3">
+            <li className="flex items-center gap-2">
+              <span className="text-green-600">✔</span> 24 hours a day, 7 days a week customer support team
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600">✔</span> Professional drivers with highly communication skills and safety standards
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-600">✔</span> All our fleet latest models years 2020/2024
+            </li>
+          </ul>
+        </div>
+      </motion.div>
+
     </div>
   );
 };

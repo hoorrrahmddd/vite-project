@@ -11,6 +11,9 @@ import Register from './Pages/Register';
 import Login from './Pages/Login';
 import RenterDashboard from './Pages/RenterDashboard ';
 import RentDetails from './Pages/RentDetails'
+import AdminDashboard from './Pages/AdminDashboard';
+import CarOwnerDashboard from './Pages/CarOwnerDashboard';
+import AddCar from './Pages/AddCar';
 const App = () => {
   const [loading, setloading] = useState(false);
 
@@ -38,7 +41,9 @@ const App = () => {
             <Route path="/Register" element={<Register />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/RenterDashboard" element={<RenterDashboard />} />
-            <Route path="/rent/:carId" element={<RentDetails />} />
+            <Route path="/AdminDashboard" element={<AdminDashboard />} />
+            <Route path="/CarOwnerDashboard" element={<CarOwnerDashboard />} />
+            <Route path="/AddCar" element={<AddCar />} />
           </Routes>
           <Footer />
         </>

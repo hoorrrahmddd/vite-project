@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const cars = [
   {
     id: 1,
-    image: '/src/assets/car1.jpg',
+    image: 'src/assets/BMW-MY24-5Series-Core-DP-MakeItYours-Mobile.avif',
     owner: 'Sarah A.',
     title: 'Luxury Sedan',
     description: 'Spacious and comfortable, perfect for family trips.',

@@ -1,5 +1,3 @@
-// ======================== Navbar Component with Login/Logout and Auto Refresh ========================
-
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
@@ -11,17 +9,21 @@ const links = [
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    setToken(storedToken);
+    const interval = setInterval(() => {
+      const storedToken = localStorage.getItem('token');
+      setToken(storedToken);
+    }, 500); // كل نص ثانية يتأكد
+
+    return () => clearInterval(interval); // ينضف الانترفال لما الكومبوننت يتقفل
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     setToken(null);
-    navigate('/');
+    navigate('/Login'); // رجع المستخدم على صفحة اللوجن
   };
 
   return (
