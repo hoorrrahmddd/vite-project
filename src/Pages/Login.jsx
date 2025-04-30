@@ -21,7 +21,7 @@ const Login = () => {
       console.log('Login Response:', response.data);
 
       if (!response.data.token) {
-        alert(response.data.message || 'Login failed.');
+        alert(response.data.message || 'Login failed.'); 
         return;
       }
 
