@@ -37,6 +37,7 @@ const Home = () => {
   };
 
   return (
+    
     <div className="flex flex-col bg-[#f4f4f4] min-h-[100vh] relative overflow-hidden">
       {/* ===== Hero Section Background Circles ===== */}
       <div className="absolute top-[-100px] left-[-180px] z-0">

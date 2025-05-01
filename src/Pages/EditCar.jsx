@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const AddCar = () => {
+const EditCar = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -16,6 +19,45 @@ const AddCar = () => {
     rentalPrice: '',
     image: null,
   });
+
+  useEffect(() => {
+    const fetchCar = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const res = await axios.get(`https://localhost:7037/api/CarOwner/MyCars`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const carsArray = res.data?.$values || [];
+        const car = carsArray.find(c => c.id === parseInt(id));
+        if (!car) {
+          alert('Car not found');
+          navigate('/CarOwnerDashboard');
+          return;
+        }
+
+        setFormData({
+          title: car.title || '',
+          description: car.description || '',
+          carType: car.carType || '',
+          brand: car.brand || '',
+          model: car.model || '',
+          year: car.year || '',
+          transmission: car.transmission || '',
+          location: car.location || '',
+          availableFrom: car.availableFrom?.split('T')[0] || '',
+          availableTo: car.availableTo?.split('T')[0] || '',
+          rentalPrice: car.rentalPrice || '',
+          image: null,
+        });
+      } catch (err) {
+        console.error('❌ Failed to fetch car data:', err);
+        alert('Error loading car data.');
+      }
+    };
+
+    if (id) fetchCar();
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -35,24 +77,24 @@ const AddCar = () => {
     });
 
     try {
-      const res = await axios.post('https://localhost:7037/api/CarOwner/AddCar', data, {
+      await axios.put(`https://localhost:7037/api/CarOwner/UpdateCar/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });
-      alert('✅ Car added successfully and pending admin approval!');
-      console.log(res.data);
+      alert('✅ Car updated successfully!');
+      navigate('/CarOwnerDashboard');
     } catch (err) {
-      console.error('❌ Failed to add car:', err);
-      alert('Failed to add car. Please try again.');
+      console.error('❌ Failed to update car:', err);
+      alert('Failed to update car.');
     }
   };
 
   return (
     <div className="min-h-screen bg-[#f9f9f9] flex items-center justify-center px-4 py-12">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
-        <h2 className="text-3xl font-bold text-[#2D2541] mb-8 text-center">Add New Car</h2>
+        <h2 className="text-3xl font-bold text-[#2D2541] mb-8 text-center">Edit Car</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Title" className="w-full border border-gray-300 rounded-md p-3" required />
 
@@ -85,10 +127,10 @@ const AddCar = () => {
 
           <input type="number" name="rentalPrice" value={formData.rentalPrice} onChange={handleChange} placeholder="Rental Price per day ($)" className="w-full border border-gray-300 rounded-md p-3" required />
 
-          <input type="file" name="image" accept="image/*" onChange={handleChange} className="w-full border border-gray-300 rounded-md p-3" required />
+          <input type="file" name="image" accept="image/*" onChange={handleChange} className="w-full border border-gray-300 rounded-md p-3" />
 
           <button type="submit" className="w-full bg-[#2D2541] text-white py-3 rounded-md hover:bg-[#1f1b35] transition">
-            Add Car
+            Update Car
           </button>
         </form>
       </div>
@@ -96,4 +138,4 @@ const AddCar = () => {
   );
 };
 
-export default AddCar;
+export default EditCar;

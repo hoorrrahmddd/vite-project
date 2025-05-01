@@ -25,13 +25,13 @@ const Login = () => {
         return;
       }
 
-      // ✅ Save token
+      // Save token
       localStorage.setItem('token', response.data.token);
 
-      // ✅ Decode JWT to get role
+      // Decode JWT to get role
       const decoded = jwtDecode(response.data.token);
       const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-      console.log("✅ Role from token:", role);
+      console.log(" Role from token:", role);
 
       // 🔀 Navigate based on role
       if (role === 'Admin') {
