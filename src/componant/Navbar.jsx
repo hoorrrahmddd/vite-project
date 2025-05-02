@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate  } from 'react-router-dom';
 import axios from 'axios';
 const links = [
   { id: 1, page: "HOME", path: "/" },
@@ -47,7 +47,7 @@ const Navbar = () => {
   
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+    <div className=" top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="container mx-auto px-6 py-2 flex items-center justify-between">
 
         {/* Navbar Branding */}

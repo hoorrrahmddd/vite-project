@@ -9,12 +9,10 @@ const RefreshTokenHandler = () => {
     const checkTokenExpiration = () => {
       const token = localStorage.getItem('token');
       const refreshToken = localStorage.getItem('refreshToken');
-
       if (!token || !refreshToken) {
         console.warn(" Missing token or refreshToken");
         return;
       }
-
       try {
         const decoded = jwtDecode(token);
         const expiry = decoded.exp * 1000;
@@ -41,7 +39,7 @@ const RefreshTokenHandler = () => {
               console.error(' Refresh token request failed:', err);
               localStorage.removeItem('token');
               localStorage.removeItem('refreshToken');
-              // ممكن ترجع المستخدم للوجين هنا
+              
             });
         }
       } catch (err) {

@@ -9,6 +9,7 @@ const Cars = () => {
   const [selectedType, setSelectedType] = useState('All');
   const [selectedBrand, setSelectedBrand] = useState('All');
   const [maxPrice, setMaxPrice] = useState(200);
+{/*
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -22,7 +23,7 @@ const Cars = () => {
 
     fetchCars();
   }, []);
-
+*/ }
   const handleRentClick = () => {
     navigate('/login');
   };
