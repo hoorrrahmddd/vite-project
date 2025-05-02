@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 const links = [
   { id: 1, page: "HOME", path: "/" },
   { id: 2, page: "ABOUT US", path: "/About" },
@@ -20,11 +20,31 @@ const Navbar = () => {
     return () => clearInterval(interval); // ينضف الانترفال لما الكومبوننت يتقفل
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');
+  
+    try {
+     
+      await axios.post('https://localhost:7037/api/User/logout', null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    } catch (err) {
+      console.warn('Logout API failed:', err);
+    }
+  
+    // مسح التوكنات من اللوكل ستورج
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('role');
     setToken(null);
-    navigate('/Login'); // رجع المستخدم على صفحة اللوجن
+  
+    //  اليوزر يرجع للهوم
+    navigate('/');
   };
+  
+  
 
   return (
     <div className="fixed top-0 left-0 w-full bg-white shadow-md z-50">

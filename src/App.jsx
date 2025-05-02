@@ -15,6 +15,7 @@ import AdminDashboard from './Pages/AdminDashboard';
 import CarOwnerDashboard from './Pages/CarOwnerDashboard';
 import AddCar from './Pages/AddCar';
 import EditCar from './Pages/EditCar';
+import RefreshTokenHandler from './Pages/RefreshTokenHandler';
 const App = () => {
   const [loading, setloading] = useState(false);
 
@@ -27,12 +28,14 @@ const App = () => {
 
   return (
     <BrowserRouter>
+     <RefreshTokenHandler/>
       {loading ? (
         <div className="flex items-center justify-center h-screen">
           <DotLoader color="#B6B6B6" loading={loading} size={200} />
         </div>
       ) : (
         <>
+       
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />

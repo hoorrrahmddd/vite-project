@@ -41,10 +41,10 @@ const AddCar = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert('✅ Car added successfully and pending admin approval!');
+      alert(' Car added successfully and pending admin approval!');
       console.log(res.data);
     } catch (err) {
-      console.error('❌ Failed to add car:', err);
+      console.error(' Failed to add car:', err);
       alert('Failed to add car. Please try again.');
     }
   };

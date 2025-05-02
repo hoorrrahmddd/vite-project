@@ -19,7 +19,6 @@ const Login = () => {
     try {
       const response = await axios.post('https://localhost:7037/api/User/login', formData);
       console.log('Login Response:', response.data);
-
       if (!response.data.token) {
         alert(response.data.message || 'Login failed.'); 
         return;
@@ -27,13 +26,14 @@ const Login = () => {
 
       // Save token
       localStorage.setItem('token', response.data.token);
-
+      localStorage.setItem('refreshToken', response.data.refreshToken); 
+      
       // Decode JWT to get role
       const decoded = jwtDecode(response.data.token);
       const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-      console.log(" Role from token:", role);
-
-      // 🔀 Navigate based on role
+      localStorage.setItem("role", role);
+     
+      // Navigate based on role
       if (role === 'Admin') {
         navigate('/AdminDashboard');
       } else if (role === 'CarOwner') {
