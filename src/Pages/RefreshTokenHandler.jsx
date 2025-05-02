@@ -49,12 +49,12 @@ const RefreshTokenHandler = () => {
       }
     };
 
-    const interval = setInterval(checkTokenExpiration, 60 * 1000); // كل دقيقة
+    const interval = setInterval(checkTokenExpiration, 60 * 1000); 
 
     return () => clearInterval(interval);
   }, []);
 
-  return null; // مش بيعرض حاجة
+  return null; 
 };
 
 export default RefreshTokenHandler;
