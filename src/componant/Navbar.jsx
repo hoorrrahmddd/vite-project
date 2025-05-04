@@ -15,7 +15,7 @@ const Navbar = () => {
     const interval = setInterval(() => {
       const storedToken = localStorage.getItem('token');
       setToken(storedToken);
-    }, 500); // كل نص ثانية يتأكد
+    }, 500); 
 
     return () => clearInterval(interval); // ينضف الانترفال لما الكومبوننت يتقفل
   }, []);
@@ -34,13 +34,13 @@ const Navbar = () => {
       console.warn('Logout API failed:', err);
     }
   
-    // مسح التوكنات من اللوكل ستورج
+    
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('role');
     setToken(null);
   
-    //  اليوزر يرجع للهوم
+   
     navigate('/');
   };
   
@@ -96,7 +96,8 @@ const Navbar = () => {
               </button>
               <button
                 onClick={() => navigate('/Register')}
-                className="bg-black text-white border px-6 py-2 rounded-full hover:bg-[#e0e0e0] hover:text-black transition duration-500"
+                className="bg-black text-white border px-6 py-2 rounded-full
+                 hover:bg-[#e0e0e0] hover:text-black transition duration-500"
               >
                 Register
               </button>

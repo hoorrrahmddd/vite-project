@@ -1,32 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const Cars = () => {
-  const navigate = useNavigate();
   const [cars, setCars] = useState([]);
   const [selectedType, setSelectedType] = useState('All');
   const [selectedBrand, setSelectedBrand] = useState('All');
   const [maxPrice, setMaxPrice] = useState(200);
-{/*
 
-  useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const res = await axios.get('https://localhost:7037/api/Car/GetAvailableCars');
-        setCars(res.data);
-      } catch (err) {
-        console.error('❌ Failed to fetch cars:', err);
-      }
-    };
-
-    fetchCars();
-  }, []);
-*/ }
-  const handleRentClick = () => {
-    navigate('/login');
+  const navigate = useNavigate();
+  const handleRentClick = (carId) => {
+    navigate(`/apply-rent/${carId}`);
   };
+  
+  useEffect(() => {
+    const fakeCars = [
+      {
+        id: 1,
+        title: 'Toyota Corolla',
+        description: 'Reliable sedan, great for city drives.',
+        carType: 'Sedan',
+        brand: 'Toyota',
+        model: 'Corolla',
+        year: '2021',
+        transmission: 'Automatic',
+        location: 'Cairo',
+        rentalStatus: 'Available',
+        availableFrom: '2025-05-01',
+        availableTo: '2025-06-01',
+        rentalPrice: '120',
+        imagePath: 'src/assets/pexels-photo-305070.webp',
+      },
+      {
+        id: 2,
+        title: 'Jeep Wrangler',
+        description: '4x4 SUV, perfect for desert adventures.',
+        carType: '4x4',
+        brand: 'Jeep',
+        model: 'Wrangler',
+        year: '2020',
+        transmission: 'Manual',
+        location: 'Alexandria',
+        rentalStatus: 'Available',
+        availableFrom: '2025-05-05',
+        availableTo: '2025-06-10',
+        rentalPrice: '180',
+        imagePath: 'src/assets/تنزيل-removebg-preview.png',
+      },
+    ];
+    setCars(fakeCars);
+  }, []);
 
   const filteredCars = cars.filter((car) => {
     const matchesType = selectedType === 'All' || car.carType === selectedType;
@@ -36,6 +59,8 @@ const Cars = () => {
   });
 
   const uniqueBrands = [...new Set(cars.map(car => car.brand))];
+
+ 
 
   return (
     <div className="bg-[#f4f4f4] min-h-screen px-6 py-16 lg:px-32">
@@ -93,7 +118,7 @@ const Cars = () => {
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-6"
           >
             <img
-              src={`https://localhost:7037/${car.imagePath}`}
+              src={car.imagePath}
               alt={car.title}
               className="w-full h-48 object-cover rounded-lg mb-4"
             />
@@ -114,13 +139,13 @@ const Cars = () => {
               <span className={car.rentalStatus === 'Available' ? 'text-green-500' : 'text-red-500'}>{car.rentalStatus}</span>
             </div>
             <div className="text-sm text-gray-600 mb-4">
-              <strong>Available:</strong> {car.availableFrom?.slice(0, 10)} - {car.availableTo?.slice(0, 10)}
+              <strong>Available:</strong> {car.availableFrom} - {car.availableTo}
             </div>
 
             <div className="flex justify-between items-center">
               <span className="font-bold text-[#2D2541]">${car.rentalPrice}/day</span>
               <button
-                onClick={handleRentClick}
+              onClick={() => handleRentClick(car.id)}
                 className="bg-black text-white px-4 py-1 text-sm rounded-md hover:bg-[#2D2541] transition duration-300"
               >
                 Rent Now

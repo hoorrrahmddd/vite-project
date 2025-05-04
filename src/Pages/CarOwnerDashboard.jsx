@@ -107,28 +107,57 @@ const CarOwnerDashboard = () => {
                 Add New Car
               </button>
             </div>
-            {cars.map(car => (
-              <div key={car.id} className="bg-white p-4 rounded-lg shadow flex justify-between items-center">
-                <div>
-                  <p className="font-semibold">{car.title}</p>
-                  <p className="text-gray-500 text-sm">Status: {car.rentalStatus}</p>
-                </div>
-                <div className="flex gap-4">
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition text-sm"
-                    onClick={() => navigate(`/EditCar/${car.id}`)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteCar(car.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition text-sm"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {cars.map(car => (
+    <div 
+      key={car.id}
+      className="w-full max-w-sm bg-white rounded-2xl shadow-md border border-gray-200 
+      overflow-hidden transition hover:shadow-lg duration-300"
+    >
+      {/* صورة السيارة */}
+      <div className="w-full h-48">
+        <img
+          src={`https://localhost:7037/${car.imagePath}`}
+          alt="Car"
+          onError={(e) => { e.target.src = '/default-car.jpg'; }}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* التفاصيل */}
+      <div className="p-5 text-[#2D2541]">
+        <h2 className="text-xl font-bold mb-2">{car.title || `Car #${car.id}`}</h2>
+        <p className="text-xs text-black mb-3">Status: {car.rentalStatus}</p>
+
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-700 mb-4">
+          <p><span className="text-[#0C639D] font-bold">Brand:</span> {car.brand}</p>
+          <p><span className="text-[#0C639D] font-bold">Model:</span> {car.model}</p>
+          <p><span className="text-[#0C639D] font-bold">Year:</span> {car.year}</p>
+          <p><span className="text-[#0C639D] font-bold">Type:</span> {car.carType}</p>
+          <p className="col-span-2"><span className="text-[#0C639D] font-bold">Price:</span> <span className="font-semibold text-[#9d160c]">{car.rentalPrice} EGP/day</span></p>
+        </div>
+
+        {/* الأزرار */}
+        <div className="flex gap-3">
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition text-sm w-full"
+            onClick={() => navigate(`/EditCar/${car.id}`)}
+          >
+            ✏️ Edit
+          </button>
+          <button
+            onClick={() => handleDeleteCar(car.id)}
+            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition text-sm w-full"
+          >
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+
           </section>
         )}
 
