@@ -70,7 +70,7 @@ const CarOwnerDashboard = () => {
   return (
     <div className="min-h-screen flex bg-[#f4f4f4]">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#d1d1d1] p-6">
+      <aside className="w-64 bg-[#f0f0f0] p-6">
         <h2 className="text-xl font-bold text-[#2D2541] mb-6">Car Owner Panel</h2>
         <ul className="space-y-4">
           <li>
@@ -94,12 +94,12 @@ const CarOwnerDashboard = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-10">
-        <h1 className="text-3xl font-bold text-[#2D2541] mb-8">Car Owner Dashboard</h1>
+      
 
         {activeSection === 'cars' && (
           <section className="space-y-4">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold">My Cars</h2>
+              <h1 className="text-2xl font-semibold">My Cars</h1>
               <button
                 className="bg-black text-white px-6 py-2 rounded-md hover:bg-[#1f1b35] transition text-sm"
                 onClick={() => navigate('/AddCar')}
@@ -140,16 +140,17 @@ const CarOwnerDashboard = () => {
         {/* الأزرار */}
         <div className="flex gap-3">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition text-sm w-full"
+            className="bg-[#28777B] text-white px-4 py-2 rounded-md hover:bg-blue-600 transition text-sm w-full"
             onClick={() => navigate(`/EditCar/${car.id}`)}
           >
             ✏️ Edit
           </button>
           <button
             onClick={() => handleDeleteCar(car.id)}
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition text-sm w-full"
+            className="bg-[#FFEDEF] text-[#EF6370] px-7 py-2 
+            rounded-md text-l hover:bg-[#EF6370] hover:text-white font-bold flex items-center gap-2"
           >
-            🗑️ Delete
+             Delete
           </button>
         </div>
       </div>

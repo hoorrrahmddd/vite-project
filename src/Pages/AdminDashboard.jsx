@@ -74,7 +74,7 @@ const AdminDashboard = () => {
   return (
     <div className="text-[#2D2541] flex">
       {/* Sidebar */}
-      <aside className="w-64 h-screen bg-white text-black p-6 shadow-2xl rounded-2xl">
+      <aside className="w-64 h-screen bg-[#f0f0f0] text-black p-6 shadow-2xl rounded-2xl">
         <div className="flex flex-col items-center gap-4">
           <img
             src="/src/assets/admin.svg"
@@ -179,7 +179,7 @@ const AdminDashboard = () => {
                   <div className="flex gap-3 mt-3">
                     <button
                       onClick={() => handleAcceptPost(post.id)}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-md text-sm transition"
+                      className="bg-[#28777B] hover:bg-emerald-700 text-white px-6 py-2 rounded-md text-sm transition"
                     >
                       Approve
                     </button>
