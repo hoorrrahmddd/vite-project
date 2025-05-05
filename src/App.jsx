@@ -63,7 +63,7 @@ const App = () => {
                 </PublicLayout>
               }
             />
-            <Route path="/Contact" element={<Contact />} />
+           
             <Route path="/Register" element=
               {<PublicLayout>
                 <Register />
@@ -90,7 +90,7 @@ const App = () => {
               element={
                 <PrivateRoute allowedRoles={['Renter']}>
                    <RenterLayout>
-                <RenterDashboard />
+                <Feedback />
                 </RenterLayout>
                 </PrivateRoute>
               }
@@ -111,9 +111,10 @@ const App = () => {
               path="/AdminDashboard"
               element={
                 <PrivateRoute allowedRoles={['Admin']}>
-               <AdminLayout>
-               <AdminDashboard />
-               </AdminLayout>
+              <AdminLayout>
+              <AdminDashboard />
+              </AdminLayout>
+            
                 </PrivateRoute>
               }
             />

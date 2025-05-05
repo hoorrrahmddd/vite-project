@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { FaUserCheck, FaCarAlt } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('owners');
@@ -71,65 +72,72 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#f4f4f4]">
-      <aside className="w-64 bg-[#d1d1d1] p-6">
-        <h2 className="text-xl font-bold text-[#2D2541] mb-6">Admin Panel</h2>
-        <ul className="space-y-4">
-          <li>
-            <button
-              onClick={() => setActiveSection('owners')}
-              className={`w-full text-left px-4 py-2 rounded-md ${activeSection === 'owners' ? 'bg-[#2D2541] text-white' : 'bg-white text-[#2D2541]'}`}
-            >
-              Pending Car Owners
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => setActiveSection('posts')}
-              className={`w-full text-left px-4 py-2 rounded-md ${activeSection === 'posts' ? 'bg-[#2D2541] text-white' : 'bg-white text-[#2D2541]'}`}
-            >
-              Pending Car Posts
-            </button>
-          </li>
-        </ul>
+    <div className="text-[#2D2541] flex">
+      {/* Sidebar */}
+      <aside className="w-64 h-screen bg-white text-black p-6 shadow-2xl rounded-2xl">
+        <div className="flex flex-col items-center gap-4">
+          <img
+            src="/src/assets/admin.svg"
+            alt="Admin"
+            className="w-44 h-44 rounded-full object-cover border-white shadow-md"
+          />
+        </div>
+        <nav className="mt-10 flex flex-col gap-3">
+          <button
+            onClick={() => setActiveSection('owners')}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition duration-200 ${activeSection === 'owners'
+                ? 'bg-[#d4d3d3] text-[#2D2541] font-semibold shadow-md'
+                : 'hover:bg-[#a1a0a0]'
+              }`}
+          >
+            <FaUserCheck size={20} />
+            <span>Pending Car Owners</span>
+          </button>
+
+          <button
+            onClick={() => setActiveSection('posts')}
+            className={`flex items-center gap-3 px-4 py-2 rounded-lg transition duration-200 ${activeSection === 'posts'
+                ? 'bg-[#d4d3d3] text-[#2D2541] font-semibold shadow-md'
+                : 'hover:bg-[#a1a0a0]'
+              }`}
+          >
+            <FaCarAlt size={20} />
+            <span>Pending Car Posts</span>
+          </button>
+        </nav>
       </aside>
 
-      <main className="flex-1 p-10">
-        <h1 className="text-3xl font-bold text-[#2D2541] mb-8">Admin Dashboard</h1>
-
+      {/* Main Content */}
+      <div className="flex-1 p-8 overflow-y-auto">
         {activeSection === 'owners' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="text-[#2D2541]"
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <h2 className="text-2xl font-semibold mb-4">Pending Car Owners</h2>
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {pendingAccounts.map(account => (
-                <div key={account.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center gap-4 max-w-md w-[450px]">
+                <div key={account.id} className="bg-white p-6 rounded-xl shadow-lg shadow-gray-300 flex flex-col items-center text-center">
                   <img
                     src={`https://api.dicebear.com/7.x/micah/svg?seed=${encodeURIComponent(account.username)}`}
-                    alt="Avatar"
-                    className="w-14 h-14 rounded-full object-cover border border-gray-300 shadow-sm"
+                    alt="User Avatar"
+                    className="w-40 h-40 rounded-full object-cover border-4 border-[#4b4b4b] shadow-2xl mb-4"
                   />
-                  <div className="flex-1 space-y-2">
-                    <p className="text-lg font-semibold text-[#2D2541] mb-1">{account.username}</p>
-
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600">
-                      <p className="flex items-center gap-1"> ID <span>{account.id}</span></p>
-                      <p className="flex items-center gap-1">  Email<span>{account.email}</span></p>
-                      <p className="flex items-center gap-1">📞 <span>{account.phone || '—'}</span></p>
-                      <p className="flex items-center gap-1">📍 <span>{account.address || '—'}</span></p>
-                    </div>
+                  <p className="text-3xl font mb-2 ">{account.username}</p>
+                  <div className="text-m text-gray-700 space-y-1">
+                    <p>🆔 {account.id}</p>
+                    <p>📧 {account.email}</p>
+                    <p>📞 {account.phone || '—'}</p>
+                    <p>📍 {account.address || '—'}</p>
                   </div>
-
-
-                  <div className="flex flex-col gap-2">
-                    <button onClick={() => handleAcceptAccount(account.id)} className="bg-[#167B47] text-white px-3 py-1 rounded-md hover:bg-green-600 text-sm">
+                  <div className="flex gap-3 mt-4">
+                    <button
+                      onClick={() => handleAcceptAccount(account.id)}
+                      className="bg-[#28777B] hover:bg-emerald-700 text-white px-11 py-2 rounded-md text-sm shadow transition"
+                    >
                       Accept
                     </button>
-                    <button onClick={() => handleRejectAccount(account.id)} className="bg-[#FDEFF0] text-[#EF6370] px-3 py-1 rounded-md hover:bg-[#EF626F] hover:text-white text-sm">
+                    <button
+                      onClick={() => handleRejectAccount(account.id)}
+                      className="bg-rose-100 text-rose-600 hover:bg-rose-600 hover:text-white px-11 py-2 rounded-md text-sm shadow transition"
+                    >
                       Reject
                     </button>
                   </div>
@@ -140,62 +148,54 @@ const AdminDashboard = () => {
         )}
 
         {activeSection === 'posts' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="text-[#2D2541] space-y-4"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <h2 className="text-2xl font-semibold mb-4">Pending Car Posts</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {pendingPosts.map(post => (
                 <div
                   key={post.id}
-                  className="w-full max-w-sm bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden transition hover:shadow-lg duration-300"
+                  className="bg-white p-6 rounded-xl shadow-lg "
+
                 >
-                  <div className="w-full h-48">
-                    <img
-                      src={`https://localhost:7037/${post.imagePath}`}
-                      alt="Car"
-                      onError={(e) => { e.target.src = '/default-car.jpg'; }}
-                      className="w-full h-full object-cover"
-                    />
+                  <img
+                    src={`https://localhost:7037/${post.imagePath}`}
+                    alt="Car"
+                    onError={(e) => { e.target.src = '/default-car.jpg'; }}
+                    className="w-full h-48 object-cover rounded-lg mb-3 border border-[#ddd]"
+                  />
+                  <h3 className="text-xl font-bold text-[#2D2541] mb-1">{post.title || `Car #${post.id}`}</h3>
+                  <p className="text-sm text-gray-500 mb-2">Post ID: {post.id}</p>
+
+                  <div className="text-sm text-gray-700 mb-4 space-y-1 ">
+                    <p><strong>Brand:</strong> {post.brand}</p>
+                    <p><strong>Model:</strong> {post.model}</p>
+                    <p><strong>Year:</strong> {post.year}</p>
+                    <p><strong>Type:</strong> {post.carType}</p>
+                    <p><strong>Location:</strong> {post.location}</p>
+                    <p><strong>Price:</strong> {post.rentalPrice} EGP/day</p>
+                    <p><strong>Available:</strong> {post.availableFrom?.split('T')[0]} → {post.availableTo?.split('T')[0]}</p>
                   </div>
 
-                  <div className="p-5 text-[#2D2541]">
-                    <h2 className="text-xl font-bold mb-2">{post.title || `Car #${post.id}`}</h2>
-                    <p className="text-xs text-gray-400 mb-3">Post ID: {post.id}</p>
-
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-700 mb-4">
-                      <p><span className="text-[#0C639D] font-bold">Brand:</span> {post.brand}</p>
-                      <p><span className="text-[#0C639D] font-bold">Model:</span> {post.model}</p>
-                      <p><span className="text-[#0C639D] font-bold">Year:</span> {post.year}</p>
-                      <p><span className="text-[#0C639D] font-bold">Type:</span> {post.carType}</p>
-                      <p><span className="text-[#0C639D] font-bold">Location:</span> {post.location}</p>
-                      <p><span className="text-[#0C639D] font-bold">Price:</span> <span className="font-semibold text-[#9d160c]">{post.rentalPrice} EGP/day</span></p>
-                      <p className="col-span-2"><span className="text-[#0C639D] font-bold">Available:</span> {post.availableFrom?.split('T')[0]} → {post.availableTo?.split('T')[0]}</p>
-                    </div>
-
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => handleAcceptPost(post.id)}
-                        className="bg-[#167B47] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition w-full"
-                      >
-                        Approve
-                      </button>
-                      <button
-                        onClick={() => handleRejectPost(post.id)}
-                        className="bg-[#FFEDEF] text-[#EF6370] px-4 py-2 rounded-md text-sm font-medium hover:bg-[#EF6370] hover:text-white transition w-full"
-                      >
-                        Reject
-                      </button>
-                    </div>
+                  <div className="flex gap-3 mt-3">
+                    <button
+                      onClick={() => handleAcceptPost(post.id)}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-md text-sm transition"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleRejectPost(post.id)}
+                      className="bg-rose-100 text-rose-600 hover:bg-rose-600 hover:text-white px-6 py-2 rounded-md text-sm transition"
+                    >
+                      Reject
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           </motion.div>
         )}
-      </main>
+      </div>
     </div>
   );
 };
