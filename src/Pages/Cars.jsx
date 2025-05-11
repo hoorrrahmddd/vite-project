@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { startConnection, onNotificationReceived } from '../signalr/notificationHub';
-
+import { toast } from 'react-toastify';
 
 const Cars = () => {
   const [cars, setCars] = useState([]);
@@ -29,10 +29,21 @@ const Cars = () => {
 
     // 🟡 Listen for real-time notification
     onNotificationReceived((message) => {
-      alert("🚗 New Car Post: " + message);
-      window.location.reload();
+      toast.info(`🚗 ${message}`, {
+        position: "top-right",
+        autoClose: 6000,
+        hideProgressBar: false,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      // ⏳ Reload after delay
+      setTimeout(() => {
+        window.location.reload();
+      }, 3500);
     });
 
+    // ⬇️ Load Cars + Feedbacks
     fetch("https://localhost:7037/api/car")
       .then(res => res.json())
       .then(async data => {
@@ -71,6 +82,7 @@ const Cars = () => {
     <div className="bg-[#f4f4f4] min-h-screen px-6 py-16 lg:px-32">
       <h2 className="text-3xl font-bold text-[#2D2541] mb-6 text-left">Available Cars</h2>
 
+      {/* 🔍 Filters */}
       <div className="flex gap-4 mb-6 flex-wrap">
         {['All', 'SUV', 'Sedan', '4x4', 'Hatchback'].map((type) => (
           <button
@@ -112,6 +124,7 @@ const Cars = () => {
         </div>
       </div>
 
+      {/* 🚗 Car Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {filteredCars.map((car) => (
           <motion.div
@@ -153,6 +166,7 @@ const Cars = () => {
               </button>
             </div>
 
+            {/* 💬 Feedback */}
             {car.feedbacks && car.feedbacks.length > 0 && (
               <div className="mt-4">
                 <h4 className="text-sm font-semibold text-[#2D2541] mb-1">User Feedback:</h4>

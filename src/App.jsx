@@ -24,6 +24,8 @@ import CarOwnerLayout from './Layout/CarOwnerLayout';
 import AdminLayout from './Layout/AdminLayout';
 import RenterLayout from './Layout/RenterLayout';
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 
 const App = () => {
   const [loading, setloading] = useState(false);
@@ -153,8 +155,7 @@ const App = () => {
               }
             />
           </Routes>
-       
-
+          <ToastContainer position="top-right" autoClose={3000} />
         </>
       )}
     </BrowserRouter>
