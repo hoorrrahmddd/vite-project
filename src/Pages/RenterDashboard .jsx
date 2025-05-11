@@ -1,59 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const RenterDashboard = () => {
   const [requests, setRequests] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    // بيانات وهمية بدل API
-    const dummyRequests = [
-      {
-        id: 1,
-        status: 'Accepted',
-        requestDate: '2025-05-01',
-        licenseDocumentPath: 'docs/license1.pdf',
-        proposalDocumentPath: 'docs/proposal1.pdf',
-        car: {
-          id: 101,
-          title: 'Toyota Corolla',
-          location: 'Cairo',
-          availableFrom: '2025-05-10',
-          availableTo: '2025-06-10'
-        }
-      },
-      {
-        id: 2,
-        status: 'Pending',
-        requestDate: '2025-05-02',
-        licenseDocumentPath: 'docs/license2.pdf',
-        proposalDocumentPath: 'docs/proposal2.pdf',
-        car: {
-          id: 102,
-          title: 'Jeep Wrangler',
-          location: 'Alexandria',
-          availableFrom: '2025-05-15',
-          availableTo: '2025-06-15'
-        }
-      },
-      {
-        id: 3,
-        status: 'Rejected',
-        requestDate: '2025-05-03',
-        licenseDocumentPath: 'docs/license3.pdf',
-        proposalDocumentPath: 'docs/proposal3.pdf',
-        car: {
-          id: 103,
-          title: 'Hyundai Elantra',
-          location: 'Giza',
-          availableFrom: '2025-05-20',
-          availableTo: '2025-06-20'
-        }
-      },
-    ];
+    const fetchRequests = async () => {
+      try {
+        const response = await axios.get('https://localhost:7037/api/Renter/my-requests', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setRequests(response.data || []);
+      } catch (error) {
+        console.error('Error fetching rent requests:', error);
+      }
+    };
 
-    setRequests(dummyRequests);
-  }, []);
+    fetchRequests();
+  }, [token]);
 
   const acceptedCars = requests.filter(req => req.status === 'Accepted');
 
@@ -75,11 +44,11 @@ const RenterDashboard = () => {
               <p className="text-sm text-gray-600 mb-1"><strong>Location:</strong> {req.car.location}</p>
               <p className="text-sm text-gray-600 mb-1"><strong>Status:</strong> <span className={
                 req.status === 'Accepted' ? 'text-green-600' :
-                req.status === 'Rejected' ? 'text-red-500' : 'text-yellow-500'
+                  req.status === 'Rejected' ? 'text-red-500' : 'text-yellow-500'
               }>{req.status}</span></p>
               <p className="text-sm text-gray-600 mb-1"><strong>Requested On:</strong> {new Date(req.requestDate).toLocaleDateString()}</p>
-              <p className="text-sm text-gray-600 mt-2"><strong>License:</strong> {req.licenseDocumentPath.split('/').pop()}</p>
-              <p className="text-sm text-gray-600"><strong>Proposal:</strong> {req.proposalDocumentPath.split('/').pop()}</p>
+              <p className="text-sm text-gray-600 mt-2"><strong>License:</strong> {req.licenseDocumentPath?.split('/').pop()}</p>
+              <p className="text-sm text-gray-600"><strong>Proposal:</strong> {req.proposalDocumentPath?.split('/').pop()}</p>
             </div>
           ))}
         </div>

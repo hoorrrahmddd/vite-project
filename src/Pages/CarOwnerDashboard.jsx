@@ -15,12 +15,14 @@ const CarOwnerDashboard = () => {
         const carsRes = await axios.get('https://localhost:7037/api/CarOwner/MyCars', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setCars(carsRes.data.$values || []);
+        setCars(carsRes.data || []);
+
 
         const proposalsRes = await axios.get('https://localhost:7037/api/CarOwner/RentalRequests', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setProposals(proposalsRes.data.$values || []);
+        setProposals(proposalsRes.data || []);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -162,33 +164,52 @@ const CarOwnerDashboard = () => {
           </section>
         )}
 
-        {activeSection === 'requests' && (
-          <section className="space-y-4">
-            <h2 className="text-2xl font-semibold mb-4">Rental Requests</h2>
-            {proposals.map(p => (
-              <div key={p.id} className="bg-white p-4 rounded-lg shadow flex justify-between items-center">
-                <div>
-                  <p className="font-semibold">{p.renterName || `Renter ID: ${p.renterId}`}</p>
-                  <p className="text-gray-500 text-sm">Car: {p.car?.title || `Car ID: ${p.carId}`}</p>
-                </div>
-                <div className="flex gap-4">
-                  <button
-                    onClick={() => handleAcceptProposal(p.id)}
-                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition text-sm"
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => handleRejectProposal(p.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition text-sm"
-                  >
-                    Reject
-                  </button>
-                </div>
-              </div>
-            ))}
-          </section>
-        )}
+{activeSection === 'requests' && (
+  <section className="space-y-4">
+    <h2 className="text-2xl font-semibold mb-6">Rental Requests</h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {proposals.map(p => (
+        <div
+          key={p.id}
+          className="w-full max-w-sm bg-white rounded-2xl shadow-md border border-gray-200 
+          overflow-hidden transition hover:shadow-lg duration-300"
+        >
+          {/* العنوان + بيانات السيارة */}  
+          <div className="p-5 text-[#2D2541] space-y-2">
+            <h2 className="text-xl font-bold mb-1">Request from: {p.renterName || `Renter ID: ${p.renterId}`}</h2>
+            <p className="text-sm text-gray-600">Car ID: {p.carId}</p>
+            <p className="text-sm text-gray-600">Status: 
+              <span className={`ml-1 font-medium ${p.status === 'Pending' ? 'text-yellow-600' : p.status === 'Accepted' ? 'text-green-600' : 'text-red-600'}`}>
+                {p.status}
+              </span>
+            </p>
+            <div className="text-sm text-gray-600">
+              <p><strong>License:</strong> <a href={`https://localhost:7037/${p.licenseDocumentPath}`} target="_blank" rel="noreferrer" className="text-blue-700 underline">View</a></p>
+              <p><strong>Proposal:</strong> <a href={`https://localhost:7037/${p.proposalDocumentPath}`} target="_blank" rel="noreferrer" className="text-blue-700 underline">View</a></p>
+            </div>
+          </div>
+
+          {/* الأزرار */}
+          <div className="flex gap-3 px-5 pb-5 mt-2">
+            <button
+              onClick={() => handleAcceptProposal(p.id)}
+              className="bg-[#28777B] text-white px-4 py-2 rounded-md hover:bg-emerald-700 transition text-sm w-full"
+            >
+              ✅ Accept
+            </button>
+            <button
+              onClick={() => handleRejectProposal(p.id)}
+              className="bg-[#FFEDEF] text-[#EF6370] px-4 py-2 rounded-md hover:bg-[#EF6370] hover:text-white transition text-sm w-full"
+            >
+              ❌ Reject
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
       </main>
     </div>
   );

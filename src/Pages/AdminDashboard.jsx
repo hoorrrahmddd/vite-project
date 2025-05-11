@@ -18,8 +18,9 @@ const AdminDashboard = () => {
         const postsRes = await axios.get('https://localhost:7037/api/Admin/pending-cars', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setPendingAccounts(accountsRes.data.$values || []);
-        setPendingPosts(postsRes.data.$values || []);
+        setPendingAccounts(accountsRes.data || []);
+        setPendingPosts(postsRes.data || []);
+        
       } catch (err) {
         console.error('Error fetching data:', err);
       }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ApplyForRent = () => {
   const { carId } = useParams();
@@ -7,22 +8,48 @@ const ApplyForRent = () => {
   const [licenseFile, setLicenseFile] = useState(null);
   const [proposalFile, setProposalFile] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!licenseFile || !proposalFile) {
       alert('Please upload both documents.');
       return;
     }
-
-    
-    console.log('Applying for rent for car:', carId);
-    console.log('License:', licenseFile.name);
-    console.log('Proposal:', proposalFile.name);
-
-    alert(' Rent request submitted (fake).');
-    navigate('/RenterDashboard');
+  
+    try {
+      const formData = new FormData();
+      formData.append('carId', carId);
+      formData.append('startDate', new Date().toISOString()); // تقدر تغيرها بتواريخ من الفورم لو حبيت
+      formData.append('endDate', new Date().toISOString());
+      formData.append('licenseDocument', licenseFile);
+      formData.append('proposalDocument', proposalFile);
+  
+      const token = localStorage.getItem('token');
+  
+      const response = await fetch('https://localhost:7037/api/Renter/rent', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Submission error:', errorData);
+        alert(errorData.message || 'Failed to submit rental request.');
+        return;
+      }
+  
+      alert('Rental request submitted successfully!');
+      navigate('/RenterDashboard');
+  
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('An error occurred. Please try again.');
+    }
   };
+  
 
   return (
     <div className="max-w-xl mx-auto mt-10 bg-white p-6 shadow-md rounded-lg">

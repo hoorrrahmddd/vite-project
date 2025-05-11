@@ -79,9 +79,9 @@ const App = () => {
               path="/RenterDashboard"
               element={
                 <PrivateRoute allowedRoles={['Renter']}>
-                <RenterLayout>
+                <PublicLayout>
                 <RenterDashboard />
-                </RenterLayout>
+                </PublicLayout>
                 </PrivateRoute>
               }
             />

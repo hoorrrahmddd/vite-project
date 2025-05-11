@@ -1,19 +1,39 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Feedback = () => {
-  const { carId } = useParams();
+  const { id } = useParams(); // بناخد carId من المسار
+  const carId = parseInt(id);
   const navigate = useNavigate();
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // دلوقتي مفيش API، فنعمل Console ونرجع للداشبورد
-    console.log('Feedback submitted:', { carId, rating, comment });
-    alert('✅ Feedback submitted (fake)!');
-    navigate('/RenterDashboard');
+    try {
+      const token = localStorage.getItem('token');
+
+      await axios.post('https://localhost:7037/api/Feedback/add',
+        {
+          carId,
+          rating: parseInt(rating),
+          comment
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
+
+      alert('✅ Feedback submitted successfully!');
+      navigate('/RenterDashboard');
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      alert('❌ Failed to submit feedback.');
+    }
   };
 
   return (

@@ -9,46 +9,42 @@ const Cars = () => {
   const [maxPrice, setMaxPrice] = useState(200);
 
   const navigate = useNavigate();
+
   const handleRentClick = (carId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please log in as a Renter to rent a car.");
+      navigate("/login");
+      return;
+    }
+
     navigate(`/apply-rent/${carId}`);
   };
-  
+
   useEffect(() => {
-    const fakeCars = [
-      {
-        id: 1,
-        title: 'Toyota Corolla',
-        description: 'Reliable sedan, great for city drives.',
-        carType: 'Sedan',
-        brand: 'Toyota',
-        model: 'Corolla',
-        year: '2021',
-        transmission: 'Automatic',
-        location: 'Cairo',
-        rentalStatus: 'Available',
-        availableFrom: '2025-05-01',
-        availableTo: '2025-06-01',
-        rentalPrice: '120',
-        imagePath: 'src/assets/pexels-photo-305070.webp',
-      },
-      {
-        id: 2,
-        title: 'Jeep Wrangler',
-        description: '4x4 SUV, perfect for desert adventures.',
-        carType: '4x4',
-        brand: 'Jeep',
-        model: 'Wrangler',
-        year: '2020',
-        transmission: 'Manual',
-        location: 'Alexandria',
-        rentalStatus: 'Available',
-        availableFrom: '2025-05-05',
-        availableTo: '2025-06-10',
-        rentalPrice: '180',
-        imagePath: 'src/assets/تنزيل-removebg-preview.png',
-      },
-    ];
-    setCars(fakeCars);
+    fetch("https://localhost:7037/api/car")
+      .then(res => res.json())
+      .then(async data => {
+        const uniqueCars = data.filter(
+          (car, index, self) =>
+            car && car.id && self.findIndex(c => c.id === car.id) === index
+        );
+
+        const carsWithFeedbacks = await Promise.all(
+          uniqueCars.map(async (car) => {
+            try {
+              const res = await fetch(`https://localhost:7037/api/Feedback/car/${car.id}`);
+              const feedbacks = await res.json();
+              return { ...car, feedbacks };
+            } catch {
+              return { ...car, feedbacks: [] };
+            }
+          })
+        );
+
+        setCars(carsWithFeedbacks);
+      })
+      .catch(err => console.error("Error loading cars:", err));
   }, []);
 
   const filteredCars = cars.filter((car) => {
@@ -60,13 +56,10 @@ const Cars = () => {
 
   const uniqueBrands = [...new Set(cars.map(car => car.brand))];
 
- 
-
   return (
     <div className="bg-[#f4f4f4] min-h-screen px-6 py-16 lg:px-32">
       <h2 className="text-3xl font-bold text-[#2D2541] mb-6 text-left">Available Cars</h2>
 
-      {/* Filters */}
       <div className="flex gap-4 mb-6 flex-wrap">
         {['All', 'SUV', 'Sedan', '4x4', 'Hatchback'].map((type) => (
           <button
@@ -86,8 +79,10 @@ const Cars = () => {
           className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2D2541]"
         >
           <option value="All">All Brands</option>
-          {uniqueBrands.map((brand) => (
-            <option key={brand} value={brand}>{brand}</option>
+          {uniqueBrands.map((brand, index) => (
+            <option key={`${brand}-${index}`} value={brand}>
+              {brand}
+            </option>
           ))}
         </select>
 
@@ -106,7 +101,6 @@ const Cars = () => {
         </div>
       </div>
 
-      {/* Cars List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {filteredCars.map((car) => (
           <motion.div
@@ -118,7 +112,7 @@ const Cars = () => {
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-6"
           >
             <img
-              src={car.imagePath}
+              src={`https://localhost:7037/${car.imagePath}`}
               alt={car.title}
               className="w-full h-48 object-cover rounded-lg mb-4"
             />
@@ -134,23 +128,34 @@ const Cars = () => {
             <div className="text-sm text-gray-600 mb-2">
               <strong>Location:</strong> {car.location}
             </div>
-            <div className="text-sm text-gray-600 mb-2">
-              <strong>Status:</strong>{' '}
-              <span className={car.rentalStatus === 'Available' ? 'text-green-500' : 'text-red-500'}>{car.rentalStatus}</span>
-            </div>
             <div className="text-sm text-gray-600 mb-4">
-              <strong>Available:</strong> {car.availableFrom} - {car.availableTo}
+              <strong>Available:</strong> {car.availableFrom?.split("T")[0]} - {car.availableTo?.split("T")[0]}
             </div>
 
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-4">
               <span className="font-bold text-[#2D2541]">${car.rentalPrice}/day</span>
               <button
-              onClick={() => handleRentClick(car.id)}
+                onClick={() => handleRentClick(car.id)}
                 className="bg-black text-white px-4 py-1 text-sm rounded-md hover:bg-[#2D2541] transition duration-300"
               >
                 Rent Now
               </button>
             </div>
+
+            {/* 💬 Feedback Section */}
+            {car.feedbacks && car.feedbacks.length > 0 && (
+              <div className="mt-4">
+                <h4 className="text-sm font-semibold text-[#2D2541] mb-1">User Feedback:</h4>
+                <div className="space-y-2 max-h-32 overflow-y-auto pr-2">
+                  {car.feedbacks.map((fb, index) => (
+                    <div key={index} className="border-t pt-2 text-sm text-gray-700">
+                      <p>⭐ {fb.rating} / 5</p>
+                      <p className="italic">"{fb.comment}"</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         ))}
       </div>
