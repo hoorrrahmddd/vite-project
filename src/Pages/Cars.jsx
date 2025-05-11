@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { startConnection, onNotificationReceived } from '../signalr/notificationHub';
+
 
 const Cars = () => {
   const [cars, setCars] = useState([]);
@@ -22,6 +24,15 @@ const Cars = () => {
   };
 
   useEffect(() => {
+    // 🟢 Start SignalR Connection
+    startConnection();
+
+    // 🟡 Listen for real-time notification
+    onNotificationReceived((message) => {
+      alert("🚗 New Car Post: " + message);
+      window.location.reload();
+    });
+
     fetch("https://localhost:7037/api/car")
       .then(res => res.json())
       .then(async data => {
@@ -142,7 +153,6 @@ const Cars = () => {
               </button>
             </div>
 
-            {/* 💬 Feedback Section */}
             {car.feedbacks && car.feedbacks.length > 0 && (
               <div className="mt-4">
                 <h4 className="text-sm font-semibold text-[#2D2541] mb-1">User Feedback:</h4>

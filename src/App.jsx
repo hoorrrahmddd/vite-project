@@ -23,6 +23,8 @@ import PublicLayout from './Layout/PublicLayout';
 import CarOwnerLayout from './Layout/CarOwnerLayout';
 import AdminLayout from './Layout/AdminLayout';
 import RenterLayout from './Layout/RenterLayout';
+import 'react-toastify/dist/ReactToastify.css';
+
 const App = () => {
   const [loading, setloading] = useState(false);
 
@@ -151,6 +153,7 @@ const App = () => {
               }
             />
           </Routes>
+       
 
         </>
       )}
